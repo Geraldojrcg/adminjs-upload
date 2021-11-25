@@ -1,8 +1,9 @@
-import { BaseRecord, ComponentLoader } from 'adminjs'
-import { AWSOptions } from '../providers/aws-provider.js'
-import { BaseProvider } from '../providers/base-provider.js'
-import { GCPOptions } from '../providers/gcp-provider.js'
-import { LocalUploadOptions } from '../providers/local-provider.js'
+import { BaseRecord, ComponentLoader } from "adminjs";
+import { AWSOptions } from "../providers/aws-provider.js";
+import { BaseProvider } from "../providers/base-provider.js";
+import { GCPOptions } from "../providers/gcp-provider.js";
+import { LocalUploadOptions } from "../providers/local-provider.js";
+import { MinIoOptions } from "../providers/minio-provider";
 
 /**
  * Function which defines where in the bucket file should be stored.
@@ -24,7 +25,7 @@ export type UploadPathFunction = (
    * filename with extension
    */
   filename: string,
-) => string
+) => string;
 
 /**
  * Configuration options for @adminjs/upload feature
@@ -40,14 +41,17 @@ export type UploadOptions = {
   /**
    * Options for the provider
    */
-  provider: {
-    /** AWS Credentials */
-    aws?: AWSOptions,
-    /** GCP Credentials */
-    gcp?: GCPOptions,
-    /** Storage on the local drive */
-    local?: LocalUploadOptions
-  } | BaseProvider,
+  provider:
+    | {
+        minio?: MinIoOptions;
+        /** AWS Credentials */
+        aws?: AWSOptions;
+        /** GCP Credentials */
+        gcp?: GCPOptions;
+        /** Storage on the local drive */
+        local?: LocalUploadOptions;
+      }
+    | BaseProvider;
   properties: {
     /**
      * Property under which file key (path) will be stored
@@ -63,13 +67,13 @@ export type UploadOptions = {
      * Virtual property needed used when upload works in `multiple` mode. It contains all the keys
      * of the files which should be deleted. Default to `filesToDelete`
      */
-    filesToDelete?: string
+    filesToDelete?: string;
     /**
      * Virtual property where path for uploaded file will be
      * generated and accessible on the frontend.
      * Default to `filePath`
      */
-    filePath?: string
+    filePath?: string;
     /**
      * Property under which file bucket (folder) will be stored
      */
@@ -88,7 +92,7 @@ export type UploadOptions = {
      * Property under which file name will be stored
      */
     filename?: string;
-  },
+  };
   /**
    * Function which defines where the file should be placed inside the bucket.
    * Default to `${record.id()}/${filename}`.
@@ -97,35 +101,38 @@ export type UploadOptions = {
   /**
    * Indicates if feature should handle uploading multiple files
    */
-  multiple?: boolean,
+  multiple?: boolean;
 
   /** Validation rules */
   validation?: {
     /**
      * Available mime types
      */
-    mimeTypes?: Array<string>,
+    mimeTypes?: Array<string>;
     /**
      * Maximum size in bytes
      */
-    maxSize?: number,
-  },
-}
+    maxSize?: number;
+  };
+};
 
 export type UploadOptionsWithDefault = {
-  properties: Exclude<UploadOptions['properties'], 'filePath' | 'file' | 'filesToDelete'> & {
-    filePath: string,
-    file: string,
-    filesToDelete: string
-  }
-} & Exclude<UploadOptions, 'properties'>
+  properties: Exclude<
+    UploadOptions["properties"],
+    "filePath" | "file" | "filesToDelete"
+  > & {
+    filePath: string;
+    file: string;
+    filesToDelete: string;
+  };
+} & Exclude<UploadOptions, "properties">;
 
 export type FeatureInvocation = {
-  properties: Partial<UploadOptions['properties']>
-}
+  properties: Partial<UploadOptions["properties"]>;
+};
 
-export type ProviderOptions = Required<Exclude<UploadOptions['provider'], BaseProvider>>
+export type ProviderOptions = Required<Exclude<UploadOptions["provider"], BaseProvider>>;
 
-export type AvailableDefaultProviders = keyof ProviderOptions | 'base'
+export type AvailableDefaultProviders = keyof ProviderOptions | "base";
 
-export default UploadOptions
+export default UploadOptions;
