@@ -1,9 +1,4 @@
-import {
-  After,
-  buildFeature, FeatureType,
-  ListActionResponse,
-  RecordActionResponse,
-} from 'adminjs'
+import { After, buildFeature, FeatureType, ListActionResponse, RecordActionResponse } from 'adminjs'
 
 import { ERROR_MESSAGES } from './constants.js'
 import { deleteFileFactory } from './factories/delete-file-factory.js'
@@ -17,9 +12,7 @@ import bundleComponent from './utils/bundle-component.js'
 import { fillRecordWithPath } from './utils/fill-record-with-path.js'
 import { getProvider } from './utils/get-provider.js'
 
-export type ProviderOptions = Required<
-  Exclude<UploadOptions['provider'], BaseProvider>
->;
+export type ProviderOptions = Required<Exclude<UploadOptions['provider'], BaseProvider>>
 
 const DEFAULT_FILE_PROPERTY = 'file'
 const DEFAULT_FILE_PATH_PROPERTY = 'filePath'
@@ -34,8 +27,7 @@ const uploadFileFeature = (config: UploadOptions): FeatureType => {
       ...config.properties,
       file: config.properties?.file || DEFAULT_FILE_PROPERTY,
       filePath: config.properties?.filePath || DEFAULT_FILE_PATH_PROPERTY,
-      filesToDelete:
-        config.properties?.filesToDelete || DEFAULT_FILES_TO_DELETE_PROPERTY,
+      filesToDelete: config.properties?.filesToDelete || DEFAULT_FILES_TO_DELETE_PROPERTY,
     },
   }
 
@@ -51,29 +43,16 @@ const uploadFileFeature = (config: UploadOptions): FeatureType => {
   const deleteFile = deleteFileFactory(configWithDefault, provider)
   const deleteFiles = deleteFilesFactory(configWithDefault, provider)
 
-  const fillPath: After<RecordActionResponse> = async (
-    response,
-    request,
-    context,
-  ) => {
+  const fillPath: After<RecordActionResponse> = async (response, request, context) => {
     const { record } = response
 
     return {
       ...response,
-      record: await fillRecordWithPath(
-        record,
-        context,
-        configWithDefault,
-        provider,
-      ),
+      record: await fillRecordWithPath(record, context, configWithDefault, provider),
     }
   }
 
-  const fillPaths: After<ListActionResponse> = async (
-    response,
-    request,
-    context,
-  ) => {
+  const fillPaths: After<ListActionResponse> = async (response, request, context) => {
     const { records } = response
 
     return {

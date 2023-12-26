@@ -1,4 +1,13 @@
-import { ActionContext, ActionRequest, After, BaseRecord, BaseResource, ComponentLoader, RecordActionResponse, UploadedFile } from 'adminjs'
+import {
+  ActionContext,
+  ActionRequest,
+  After,
+  BaseRecord,
+  BaseResource,
+  ComponentLoader,
+  RecordActionResponse,
+  UploadedFile,
+} from 'adminjs'
 import { expect } from 'chai'
 import sinon, { SinonStubbedInstance, createStubInstance } from 'sinon'
 import { CONTEXT_NAMESPACE } from '../constants.js'
@@ -98,13 +107,15 @@ describe('updateRecordFactory', () => {
     it('updates all fields in the record', async () => {
       await updateRecord(response, request, actionContext)
 
-      expect(recordStub.update).to.have.been.calledWith(sinon.match({
-        [uploadOptions.properties.key]: expectedKey,
-        [uploadOptions.properties.bucket as string]: provider.bucket,
-        [uploadOptions.properties.size as string]: File.size.toString(),
-        [uploadOptions.properties.mimeType as string]: File.type,
-        [uploadOptions.properties.filename as string]: File.name,
-      }))
+      expect(recordStub.update).to.have.been.calledWith(
+        sinon.match({
+          [uploadOptions.properties.key]: expectedKey,
+          [uploadOptions.properties.bucket as string]: provider.bucket,
+          [uploadOptions.properties.size as string]: File.size.toString(),
+          [uploadOptions.properties.mimeType as string]: File.type,
+          [uploadOptions.properties.filename as string]: File.name,
+        }),
+      )
     })
 
     it('does not delete any old file if there were not file before', async () => {
@@ -144,13 +155,15 @@ describe('updateRecordFactory', () => {
 
       expect(provider.delete).to.have.been.calledWith(expectedKey, storedBucket)
 
-      expect(recordStub.update).to.have.been.calledWith(sinon.match({
-        [uploadOptions.properties.key]: null,
-        [uploadOptions.properties.bucket as string]: null,
-        [uploadOptions.properties.size as string]: null,
-        [uploadOptions.properties.mimeType as string]: null,
-        [uploadOptions.properties.filename as string]: null,
-      }))
+      expect(recordStub.update).to.have.been.calledWith(
+        sinon.match({
+          [uploadOptions.properties.key]: null,
+          [uploadOptions.properties.bucket as string]: null,
+          [uploadOptions.properties.size as string]: null,
+          [uploadOptions.properties.mimeType as string]: null,
+          [uploadOptions.properties.filename as string]: null,
+        }),
+      )
     })
   })
 
@@ -194,11 +207,13 @@ describe('updateRecordFactory', () => {
         [`${uploadOptions.properties.filename}.${index}` as string]: Files[index].name,
       })
 
-      expect(recordStub.update).to.have.been.calledWith(sinon.match({
-        ...values(0),
-        ...values(1),
-        ...values(2),
-      }))
+      expect(recordStub.update).to.have.been.calledWith(
+        sinon.match({
+          ...values(0),
+          ...values(1),
+          ...values(2),
+        }),
+      )
     })
   })
 

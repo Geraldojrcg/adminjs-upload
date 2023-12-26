@@ -1,7 +1,7 @@
 export const DAY_IN_MINUTES = 86400
 
 export type DuplicateOccurrence = {
-  keys: Array<string>,
+  keys: Array<string>
   value: string
 }
 
@@ -31,19 +31,16 @@ export const ERROR_MESSAGES = {
   NO_FILENAME: 'Server could not verify the file name',
   NO_KEY_PROPERTY: 'You have to define `key` property in options',
   NO_AWS_SDK: 'You have to install `aws-sdk` in order to run this plugin with AWS',
-  NO_DIRECTORY: (dir: string): string => (
-    `directory: "${dir}" does not exists. Create it before running LocalAdapter`
-  ),
-  METHOD_NOT_IMPLEMENTED: (method: string): string => (
-    `you have to implement "${method}" method`
-  ),
+  NO_DIRECTORY: (dir: string): string => `directory: "${dir}" does not exists. Create it before running LocalAdapter`,
+  METHOD_NOT_IMPLEMENTED: (method: string): string => `you have to implement "${method}" method`,
   DUPLICATED_KEYS: (keys: Array<DuplicateOccurrence>): string => {
-    const mergedKeys = keys.map((duplicate) => (
-      ` - keys: ${[...new Set(duplicate.keys).values()]
-        .map((k) => `"${k}"`)
-        .join(', ')
-      }" have the same value: "${duplicate.value},`
-    )).join('\n')
+    const mergedKeys = keys
+      .map(
+        (duplicate) => ` - keys: ${[...new Set(duplicate.keys).values()]
+          .map((k) => `"${k}"`)
+          .join(', ')}" have the same value: "${duplicate.value},`,
+      )
+      .join('\n')
 
     return [
       '\n',

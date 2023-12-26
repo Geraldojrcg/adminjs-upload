@@ -1,9 +1,9 @@
 import {
-  ActionContext, ActionRequest,
-
-  After, flat,
+  ActionContext,
+  ActionRequest,
+  After,
+  flat,
   RecordActionResponse,
-
   UploadedFile,
 } from 'adminjs'
 import { DB_PROPERTIES } from '../constants.js'
@@ -25,10 +25,8 @@ export const updateRecordFactory = (
   ): Promise<RecordActionResponse> => {
     const { record } = context
 
-    const {
-      [properties.file]: files,
-      [properties.filesToDelete]: filesToDelete,
-    } = getNamespaceFromContext(context)
+    const { [properties.file]: files, [properties.filesToDelete]: filesToDelete } =
+      getNamespaceFromContext(context)
 
     const { method } = request
 
@@ -43,15 +41,17 @@ export const updateRecordFactory = (
           bucket: record.get(properties.bucket)[index] as string | undefined,
         }))
 
-        await Promise.all(filesData.map(async (fileData) => (
-          provider.delete(fileData.key, fileData.bucket || provider.bucket, context)
-        )))
+        await Promise.all(
+          filesData.map(async (fileData) =>
+            provider.delete(fileData.key, fileData.bucket || provider.bucket, context),
+          ),
+        )
 
         const newParams = DB_PROPERTIES.reduce((params, propertyName: string) => {
           if (properties[propertyName]) {
-            const filtered = record.get(properties[propertyName]).filter((el, i) => (
-              !filesToDelete.includes(i.toString())
-            ))
+            const filtered = record
+              .get(properties[propertyName])
+              .filter((el, i) => !filesToDelete.includes(i.toString()))
             return flat.set(params, properties[propertyName], filtered)
           }
           return params
@@ -62,16 +62,15 @@ export const updateRecordFactory = (
       if (multiple && files && files.length) {
         const uploadedFiles = files as Array<UploadedFile>
 
-        const keys = await Promise.all<string>(uploadedFiles.map(async (uploadedFile) => {
-          const key = buildRemotePath(record, uploadedFile, uploadPath)
-          await provider.upload(uploadedFile, key, context)
-          return key
-        }))
+        const keys = await Promise.all<string>(
+          uploadedFiles.map(async (uploadedFile) => {
+            const key = buildRemotePath(record, uploadedFile, uploadPath)
+            await provider.upload(uploadedFile, key, context)
+            return key
+          }),
+        )
 
-        let params = flat.set({}, properties.key, [
-          ...(record.get(properties.key) || []),
-          ...keys,
-        ])
+        let params = flat.set({}, properties.key, [...(record.get(properties.key) || []), ...keys])
         if (properties.bucket) {
           params = flat.set(params, properties.bucket, [
             ...(record.get(properties.bucket) || []),
@@ -115,18 +114,23 @@ export const updateRecordFactory = (
 
         const params = {
           [properties.key]: key,
-          ...properties.bucket && { [properties.bucket]: provider.bucket },
-          ...properties.size && { [properties.size]: uploadedFile.size?.toString() },
-          ...properties.mimeType && { [properties.mimeType]: uploadedFile.type },
-          ...properties.filename && { [properties.filename]: uploadedFile.name as string },
+          ...(properties.bucket && { [properties.bucket]: provider.bucket }),
+          ...(properties.size && {
+            [properties.size]: uploadedFile.size?.toString(),
+          }),
+          ...(properties.mimeType && {
+            [properties.mimeType]: uploadedFile.type,
+          }),
+          ...(properties.filename && {
+            [properties.filename]: uploadedFile.name as string,
+          }),
         }
 
         await record.update(params)
 
         const oldKey = oldRecordParams[properties.key] && oldRecordParams[properties.key]
-        const oldBucket = (
-          properties.bucket && oldRecordParams[properties.bucket]
-        ) || provider.bucket
+        const oldBucket =
+          (properties.bucket && oldRecordParams[properties.bucket]) || provider.bucket
 
         if (oldKey && oldBucket && (oldKey !== key || oldBucket !== provider.bucket)) {
           await provider.delete(oldKey, oldBucket, context)
@@ -147,10 +151,10 @@ export const updateRecordFactory = (
         if (key && bucket) {
           const params = {
             [properties.key]: null,
-            ...properties.bucket && { [properties.bucket]: null },
-            ...properties.size && { [properties.size]: null },
-            ...properties.mimeType && { [properties.mimeType]: null },
-            ...properties.filename && { [properties.filename]: null },
+            ...(properties.bucket && { [properties.bucket]: null }),
+            ...(properties.size && { [properties.size]: null }),
+            ...(properties.mimeType && { [properties.mimeType]: null }),
+            ...(properties.filename && { [properties.filename]: null }),
           }
 
           await record.update(params)

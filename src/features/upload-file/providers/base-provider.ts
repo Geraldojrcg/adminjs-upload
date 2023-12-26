@@ -5,8 +5,8 @@ import { ERROR_MESSAGES } from '../constants.js'
 /* eslint-disable class-methods-use-this */
 
 export type ProviderOpts = {
-  baseUrl?: string; // path prefix for local provider
-};
+  baseUrl?: string // path prefix for local provider
+}
 
 /**
  * @load ./base-provider.doc.md
@@ -50,14 +50,8 @@ abstract class BaseProvider {
    * @param {ActionContext} context
    * @abstract
    */
-  public async upload(
-    file: UploadedFile,
-    key: string,
-    context: ActionContext,
-  ): Promise<any> {
-    throw new Error(
-      ERROR_MESSAGES.METHOD_NOT_IMPLEMENTED('BaseProvider#upload'),
-    )
+  public async upload(file: UploadedFile, key: string, context: ActionContext): Promise<any> {
+    throw new Error(ERROR_MESSAGES.METHOD_NOT_IMPLEMENTED('BaseProvider#upload'))
   }
 
   /**
@@ -68,14 +62,8 @@ abstract class BaseProvider {
    * @param {ActionContext} context
    * @abstract
    */
-  public async delete(
-    key: string,
-    bucket: string,
-    context: ActionContext,
-  ): Promise<any> {
-    throw new Error(
-      ERROR_MESSAGES.METHOD_NOT_IMPLEMENTED('BaseProvider#delete'),
-    )
+  public async delete(key: string, bucket: string, context: ActionContext): Promise<any> {
+    throw new Error(ERROR_MESSAGES.METHOD_NOT_IMPLEMENTED('BaseProvider#delete'))
   }
 
   /**
@@ -88,11 +76,7 @@ abstract class BaseProvider {
    * @async
    * @abstract
    */
-  public path(
-    key: string,
-    bucket: string,
-    context: ActionContext,
-  ): Promise<string> | string {
+  public path(key: string, bucket: string, context: ActionContext): Promise<string> | string {
     throw new Error(ERROR_MESSAGES.METHOD_NOT_IMPLEMENTED('BaseProvider#path'))
   }
 }

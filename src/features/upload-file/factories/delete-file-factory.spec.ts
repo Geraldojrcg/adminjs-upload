@@ -1,4 +1,10 @@
-import { ActionContext, ActionRequest, BaseRecord, ComponentLoader, RecordActionResponse } from 'adminjs'
+import {
+  ActionContext,
+  ActionRequest,
+  BaseRecord,
+  ComponentLoader,
+  RecordActionResponse,
+} from 'adminjs'
 import chai, { expect } from 'chai'
 import sinon, { SinonStubbedInstance, createStubInstance } from 'sinon'
 import sinonChai from 'sinon-chai'

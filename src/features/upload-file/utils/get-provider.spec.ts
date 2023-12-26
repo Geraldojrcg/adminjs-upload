@@ -8,10 +8,18 @@ import { BaseProvider } from '../providers/index.js'
 import { getProvider } from './get-provider.js'
 
 class MyProvider extends BaseProvider {
-  constructor() { super('bucketName') }
-  public async upload() { return true }
-  public async delete() { return true }
-  public async path() { return '/fle-url' }
+  constructor() {
+    super('bucketName')
+  }
+  public async upload() {
+    return true
+  }
+  public async delete() {
+    return true
+  }
+  public async path() {
+    return '/fle-url'
+  }
 }
 
 describe('getProvider', () => {

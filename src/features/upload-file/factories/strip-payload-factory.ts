@@ -9,7 +9,7 @@ type ContextNamespace = {
    * for properties which name we don't now right now (user defines i.e. that property holding
    * `file` can be `myFile`
    */
-  [key: string]: any,
+  [key: string]: any
   /**
    * When we strip payload for each upload we are also storing use properties under __invocations
    * key. This is because in the next step we have to validate if all the properties are unique.
@@ -18,9 +18,7 @@ type ContextNamespace = {
   __invocations: Array<FeatureInvocation>
 }
 
-export const stripPayloadFactory = (
-  uploadOptionsWithDefault: UploadOptionsWithDefault,
-): Before => {
+export const stripPayloadFactory = (uploadOptionsWithDefault: UploadOptionsWithDefault): Before => {
   const stripFileFromPayload = async (
     request: ActionRequest,
     context: ActionContext,
@@ -34,10 +32,7 @@ export const stripPayloadFactory = (
         ...data,
         [properties.file]: flat.get(request.payload, properties.file),
         [properties.filesToDelete]: flat.get(request.payload, properties.filesToDelete),
-        __invocations: [
-          ...(data.__invocations || []),
-          { properties },
-        ],
+        __invocations: [...(data.__invocations || []), { properties }],
       }
 
       context[CONTEXT_NAMESPACE] = data

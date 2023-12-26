@@ -12,12 +12,14 @@ export const deleteFile = async (
   const key = record?.get(properties.key)
 
   if (record && key && !multiple) {
-    const storedBucket = properties.bucket && record.get(properties.bucket) as string
+    const storedBucket = properties.bucket && (record.get(properties.bucket) as string)
     await provider.delete(key as string, storedBucket || provider.bucket, context)
   } else if (record && multiple && key && (key as Array<string>).length) {
-    const storedBuckets = properties.bucket ? record.get(properties.bucket) as Array<string> : []
-    await Promise.all((key as Array<string>).map(async (singleKey, index) => (
-      provider.delete(singleKey as string, storedBuckets[index] || provider.bucket, context)
-    )))
+    const storedBuckets = properties.bucket ? (record.get(properties.bucket) as Array<string>) : []
+    await Promise.all(
+      (key as Array<string>).map(async (singleKey, index) =>
+        provider.delete(singleKey as string, storedBuckets[index] || provider.bucket, context),
+      ),
+    )
   }
 }

@@ -2,9 +2,8 @@ import fs from 'fs'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { S3 } from 'aws-sdk'
 import { UploadedFile } from 'adminjs'
-import { ERROR_MESSAGES, DAY_IN_MINUTES } from '../constants'
-
-import { BaseProvider } from './base-provider'
+import { ERROR_MESSAGES, DAY_IN_MINUTES } from '../constants.js'
+import { BaseProvider } from './base-provider.js'
 
 /**
  * AWS Credentials which can be set for S3 file upload.
@@ -16,25 +15,25 @@ export type MinIoOptions = {
   /**
    * MinIo endpoint
    */
-  endpoint: string;
+  endpoint: string
   /**
    * AWS IAM accessKeyId. By default its value is taken from AWS_ACCESS_KEY_ID env variable
-  */
-  accessKeyId?: string;
+   */
+  accessKeyId?: string
   /**
    * AWS IAM secretAccessKey. By default its value is taken from AWS_SECRET_ACCESS_KEY env variable
    */
-  secretAccessKey?: string;
+  secretAccessKey?: string
 
   /**
    * S3 Bucket where files will be stored
    */
-  bucket: string;
+  bucket: string
   /**
    * indicates how long links should be available after page load (in minutes).
    * Default to 24h. If set to 0 adapter will mark uploaded files as PUBLIC ACL.
    */
-  expires?: number;
+  expires?: number
 }
 
 export class MinIoProvider extends BaseProvider {
@@ -60,7 +59,8 @@ export class MinIoProvider extends BaseProvider {
     this.s3 = new AWS_S3({
       s3ForcePathStyle: true, // needed with minio?
       signatureVersion: 'v4',
-      ...options })
+      ...options,
+    })
   }
 
   public async upload(file: UploadedFile, key: string): Promise<S3.ManagedUpload.SendData> {

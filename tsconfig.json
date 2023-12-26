@@ -13,10 +13,8 @@
     "strictFunctionTypes": true,
     "strictBindCallApply": true,
     "noImplicitThis": true,
-    "moduleResolution": "nodenext",
-    "module": "nodenext",
-
-    "baseUrl": ".",
+    "moduleResolution": "NodeNext",
+    "module": "ESNext",
     "paths": {
       "react": ["node_modules/@types/react"]
     }

@@ -6,28 +6,22 @@ import { AudioMimeTypes, ImageMimeTypes } from '../types/mime-types.type.js'
 import PropertyCustom from '../types/property-custom.type.js'
 
 type Props = ShowPropertyProps & {
-  width?: number | string;
-};
+  width?: number | string
+}
 
 type SingleFileProps = {
-  name: string;
-  path?: string;
-  mimeType?: string;
-  width?: number | string;
-};
+  name: string
+  path?: string
+  mimeType?: string
+  width?: number | string
+}
 
 const SingleFile: FC<SingleFileProps> = (props) => {
   const { name, path, mimeType, width } = props
 
   if (path && path.length) {
     if (mimeType && ImageMimeTypes.includes(mimeType as any)) {
-      return (
-        <img
-          src={path}
-          style={{ maxHeight: width, maxWidth: width }}
-          alt={name}
-        />
-      )
+      return <img src={path} style={{ maxHeight: width, maxWidth: width }} alt={name} />
     }
     if (mimeType && AudioMimeTypes.includes(mimeType as any)) {
       return (
@@ -63,16 +57,13 @@ const File: FC<Props> = ({ width, record, property }) => {
     custom.fileNameProperty ? custom.fileNameProperty : custom.keyProperty,
   )
 
-  const mimeType = custom.mimeTypeProperty
-    && flat.get(record?.params, custom.mimeTypeProperty)
+  const mimeType = custom.mimeTypeProperty && flat.get(record?.params, custom.mimeTypeProperty)
 
   if (!property.custom.multiple) {
     if (custom.opts && custom.opts.baseUrl) {
       path = `${custom.opts.baseUrl}/${name}`
     }
-    return (
-      <SingleFile path={path} name={name} width={width} mimeType={mimeType} />
-    )
+    return <SingleFile path={path} name={name} width={width} mimeType={mimeType} />
   }
   if (custom.opts && custom.opts.baseUrl) {
     const baseUrl = custom.opts.baseUrl || ''

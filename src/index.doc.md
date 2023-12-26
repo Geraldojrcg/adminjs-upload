@@ -2,16 +2,16 @@ AdminJS feature allowing you to upload files to a given resource.
 
 ## Features
 
-* Upload files by using different providers (all included):
-  * AWS S3
-  * Google Cloud Storage
-  * Local file system
-* You can create Upload Provider and handle saving on your own with 3 methods
-* Uploading more than one file to one resource to different fields
-* Uploading multiple files to an array
-* Configuration options allowing you to define which fields should be persisted and their names
-in the database
-* Previews of uploaded files
+- Upload files by using different providers (all included):
+  - AWS S3
+  - Google Cloud Storage
+  - Local file system
+- You can create Upload Provider and handle saving on your own with 3 methods
+- Uploading more than one file to one resource to different fields
+- Uploading multiple files to an array
+- Configuration options allowing you to define which fields should be persisted and their names
+  in the database
+- Previews of uploaded files
 
 ## Installation
 
@@ -27,17 +27,18 @@ The main concept of the upload plugin is that it sends uploaded files to an exte
 the class called UploadProvider (we have 3 of them out of the box). And then it stores in the
 database path and folder name where the file was stored. Where:
 
-* **key** is the path of the stored file
-* **bucket** is the name of the folder.
+- **key** is the path of the stored file
+- **bucket** is the name of the folder.
 
 Next, base on the `expires` option, the system generates either a public URL or a time-constrained URL.
 
-> Example: for 
+> Example: for
+>
 > - `key: '927292/my-pinky-sweater.png'`
 > - `bucket: 'aee-products'` and
 > - `expires: 0`
 >
-> path for the file in AWS S3 will be 
+> path for the file in AWS S3 will be
 > `https://aee-product.s3.amazonaws.com/927292/my-pinky-sweater.png` and it will be
 > always available (not time-constrained)
 
@@ -45,7 +46,7 @@ Usually, buckets are the same for all the files handled by the feature it is opt
 to store them in the database. But this might be handy if you want to change the bucket when the
 project grows and have a reference where the old files went.
 
-> To summarize: an important part is that **we don't store the actual URL** of the file - 
+> To summarize: an important part is that **we don't store the actual URL** of the file -
 > we store `key` and based on that we compute path on every request.
 
 ## Usage
@@ -88,24 +89,34 @@ const adminJs = new AdminJS(options)
 
 ## Previews
 
-Feature support previews for both **audio** and 8*images**.
+Feature support previews for both **audio** and 8\*images\*\*.
 To make it work you have to have `mimeType` property mapped in the options.
 
 Here we define that mime type will be save under a property `mimeType`:
 
 ```javascript
 const options = {
-  resources: [{
-    resource: User,
-    options: { properties: { mimeType: { /** ... **/ } }},
-    features: [uploadFeature({
-      provider: {},
-      properties: {
-        key: 'fileUrl',
-        mimeType: 'mimeType'
+  resources: [
+    {
+      resource: User,
+      options: {
+        properties: {
+          mimeType: {
+            /** ... **/
+          },
+        },
       },
-    })]
-  }]
+      features: [
+        uploadFeature({
+          provider: {},
+          properties: {
+            key: 'fileUrl',
+            mimeType: 'mimeType',
+          },
+        }),
+      ],
+    },
+  ],
 }
 ```
 
@@ -123,6 +134,7 @@ yarn add aws-sdk
 ```
 
 To upload files to AWS S3, you have to
+
 - [create a S3 bucket](https://docs.aws.amazon.com/AmazonS3/latest/user-guide/create-bucket.html)
 - [get your access keys](https://docs.aws.amazon.com/powershell/latest/userguide/pstools-appendix-sign-up.html)
 
@@ -141,7 +153,6 @@ installed:
 yarn add @google-cloud/storage
 ```
 
-
 and you are authenticated. follow {@link https://cloud.google.com/docs/authentication/getting-started this tutorial}.
 
 To upload files to AWS Google Storage, you have to follow all the instructions from:
@@ -159,7 +170,7 @@ Local storage will save files to the local folder.
 
 There are 2 things you have to do before using this Provider.
 
-#### 1. create the*folder** (`bucket`) for the files (i.e. `public`)
+#### 1. create the\*folder\*\* (`bucket`) for the files (i.e. `public`)
 
 ```sh
 cd your-app
@@ -224,7 +235,7 @@ in `options.properties`.
 Mapping fields is a process of telling @adminjs/upload that data from the field on the left
 should go to the database under the field on the right.
 
-> So below `key` property will be stored under the `mixed` property `uploadedFile` in its 
+> So below `key` property will be stored under the `mixed` property `uploadedFile` in its
 > sub-property `key` (mixed properties are JSONB properties in SQL databases or nested
 > schemas in MongoDB).
 
@@ -277,15 +288,15 @@ In order to make that work you have to make sure that all the properties passed 
 `uploadFeature` invocation are different so they don't steal data from each other.
 
 So:
-* make sure to map at least `file`, `filePath` and `filesToDelete` properties to different values 
+
+- make sure to map at least `file`, `filePath` and `filesToDelete` properties to different values
   in each upload.
-* if you store other fields like `mimeType` they also should be stored under different paths.
-* define the {@link UploadPathFunction} for each upload so that files do not override each other.
+- if you store other fields like `mimeType` they also should be stored under different paths.
+- define the {@link UploadPathFunction} for each upload so that files do not override each other.
 
 ### Example:
 
 ```javascript
-
 features = [
   uploadFeature({
     provider: {},
@@ -300,20 +311,19 @@ features = [
     },
   }),
   uploadFeature({
-  provider: {},
-  properties: {
-    file: `familyPhoto.file`,
-    filePath: `familyPhoto.file`,
-    filesToDelete: `familyPhoto.filesToDelete`,
-    key: `familyPhoto.key`,
-    mimeType: `familyPhoto.mime`,
-    bucket: `familyPhoto.bucket`,
-    size: `familyPhoto.size`,
-  },
-  uploadPath: (record, filename) => (
-    `${record.id()}/family-photos/${filename}`
-  ),
-})]
+    provider: {},
+    properties: {
+      file: `familyPhoto.file`,
+      filePath: `familyPhoto.file`,
+      filesToDelete: `familyPhoto.filesToDelete`,
+      key: `familyPhoto.key`,
+      mimeType: `familyPhoto.mime`,
+      bucket: `familyPhoto.bucket`,
+      size: `familyPhoto.size`,
+    },
+    uploadPath: (record, filename) => `${record.id()}/family-photos/${filename}`,
+  }),
+]
 ```
 
 In the example above, all the fields are stored under different paths so during the
@@ -323,8 +333,8 @@ Frontend <-> Backend data transmission they don't overlap.
 
 The feature allows you to store multiple files as an array. To do this you have to:
 
-* set `multiple` option to true
-* make sure that all your mapped properties are arrays of strings.
+- set `multiple` option to true
+- make sure that all your mapped properties are arrays of strings.
 
 If you use let say sequelize adapter you can set the type of the property to JSONB and, in adminJs
 options, define that this property is an array with {@link PropertyOptions.isArray}
@@ -332,6 +342,7 @@ options, define that this property is an array with {@link PropertyOptions.isArr
 ## Validation
 
 The feature can validate both:
+
 - maximum size of the file
 - available mime types
 
@@ -346,32 +357,36 @@ Take a look at this database model working with google cloud for a reference:
 Take a look at an example product upload schema:
 
 ```javascript
-export const ProductModel = sequelize.define('Products', {
-  // Model attributes are defined here
-  id: {
-    primaryKey: true,
-    type: DataTypes.UUID,
-    defaultValue: UUIDV4,
+export const ProductModel = sequelize.define(
+  'Products',
+  {
+    // Model attributes are defined here
+    id: {
+      primaryKey: true,
+      type: DataTypes.UUID,
+      defaultValue: UUIDV4,
+    },
+    name: {
+      allowNull: false,
+      type: DataTypes.STRING,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    images: {
+      type: DataTypes.JSONB,
+      allowNull: true,
+    },
+    mainImage: {
+      type: DataTypes.JSONB,
+      allowNull: true,
+    },
   },
-  name: {
-    allowNull: false,
-    type: DataTypes.STRING,
+  {
+    // Other model options go here
   },
-  description: {
-    type: DataTypes.TEXT,
-    allowNull: true,
-  },
-  images: {
-    type: DataTypes.JSONB,
-    allowNull: true,
-  },
-  mainImage: {
-    type: DataTypes.JSONB,
-    allowNull: true,
-  }
-}, {
-  // Other model options go here
-})
+)
 ```
 
 It has 2 fields `images` and `topImage`. Let's define that images will have a multi-upload
@@ -428,6 +443,5 @@ const features = [
   }),
 ]
 ```
-
 
 To see more examples, you can take a look at the example_app inside the repository.

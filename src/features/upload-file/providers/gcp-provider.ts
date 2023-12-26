@@ -21,7 +21,7 @@ export type GCPOptions = {
    * indicates how long links should be available after page load (in minutes).
    * Default to 24h. If set to 0 adapter will mark uploaded files as public.
    */
-  expires?: number;
+  expires?: number
 }
 
 let GCPStorage: typeof Storage | null = null
@@ -47,9 +47,7 @@ export class GCPProvider extends BaseProvider {
     }
 
     // // this check is needed because option expires can be `0`
-    this.expires = typeof options.expires === 'undefined'
-      ? DAY_IN_MINUTES
-      : options.expires
+    this.expires = typeof options.expires === 'undefined' ? DAY_IN_MINUTES : options.expires
     this.storage = new GCPStorage()
   }
 

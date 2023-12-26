@@ -13,13 +13,13 @@ export type LocalUploadOptions = {
   /**
    * Path where files will be stored. For example: `path.join(__dirname, '../public')`
    */
-  bucket: string;
+  bucket: string
 
   /**
    * options for local provider
    */
-  opts: ProviderOpts;
-};
+  opts: ProviderOpts
+}
 
 export class LocalProvider extends BaseProvider {
   constructor(options: LocalUploadOptions) {
@@ -37,9 +37,8 @@ export class LocalProvider extends BaseProvider {
   }
 
   public async delete(key: string, bucket: string): Promise<any> {
-    const fileLink = process.platform === 'win32'
-      ? this.path(key, bucket)
-      : this.path(key, bucket).slice(1)
+    const fileLink = process.platform === 'win32' ? this.path(key, bucket) : this.path(key, bucket).slice(1)
+
     if (fs.existsSync(fileLink)) {
       await fs.promises.unlink(fileLink)
     }

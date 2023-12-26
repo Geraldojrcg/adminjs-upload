@@ -1,4 +1,10 @@
-import AdminJS, { ActionContext, ActionRequest, After, ComponentLoader, RecordActionResponse } from 'adminjs'
+import AdminJS, {
+  ActionContext,
+  ActionRequest,
+  After,
+  ComponentLoader,
+  RecordActionResponse,
+} from 'adminjs'
 import chai, { expect } from 'chai'
 import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
@@ -82,11 +88,7 @@ describe('uploadFileFeature', () => {
       }
       const fillPath = getAfterHook({ componentLoader, provider, properties })
 
-      await fillPath(
-        response as RecordActionResponse,
-        {} as ActionRequest,
-        {} as ActionContext,
-      )
+      await fillPath(response as RecordActionResponse, {} as ActionRequest, {} as ActionContext)
 
       expect(provider.path).to.have.been.calledWith(key, bucket)
     })

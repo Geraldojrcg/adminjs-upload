@@ -75,17 +75,9 @@ export const TextMimeTypes = [
   'text/xml',
 ] as const
 
-export const BinaryDocsMimeTypes = [
-  'application/epub+zip',
-  'application/pdf',
-] as const
+export const BinaryDocsMimeTypes = ['application/epub+zip', 'application/pdf'] as const
 
-export const FontMimeTypes = [
-  'font/otf',
-  'font/ttf',
-  'font/woff',
-  'font/woff2',
-] as const
+export const FontMimeTypes = ['font/otf', 'font/ttf', 'font/woff', 'font/woff2'] as const
 
 export const OtherMimeTypes = [
   'application/octet-stream',
@@ -111,8 +103,10 @@ export const MimeTypes = [
   ...OtherMimeTypes,
 ]
 
-type PopularMimeTypes = typeof MimeTypes[number]
+type PopularMimeTypes = (typeof MimeTypes)[number]
 
-export type MimeType = PopularMimeTypes | {
-  [key: string]: string
-}
+export type MimeType =
+  | PopularMimeTypes
+  | {
+      [key: string]: string
+    }

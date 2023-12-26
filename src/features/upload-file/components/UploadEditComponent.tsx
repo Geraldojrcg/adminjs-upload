@@ -41,15 +41,12 @@ const Edit: FC<EditPropertyProps> = ({ property, record, onChange }) => {
   const handleMultiRemove = (singleKey) => {
     const index = (flat.get(record.params, custom.keyProperty) || []).indexOf(singleKey)
     const filesToDelete = flat.get(record.params, custom.filesToDeleteProperty) || []
-    if (
-      path && path.length > 0
-    ) {
+    if (path && path.length > 0) {
       const newPath = path.map((currentPath, i) => (i !== index ? currentPath : null))
-      let newParams = flat.set(
-        record.params,
-        custom.filesToDeleteProperty,
-        [...filesToDelete, index],
-      )
+      let newParams = flat.set(record.params, custom.filesToDeleteProperty, [
+        ...filesToDelete,
+        index,
+      ])
       newParams = flat.set(newParams, custom.filePathProperty, newPath)
 
       onChange({
@@ -92,10 +89,14 @@ const Edit: FC<EditPropertyProps> = ({ property, record, onChange }) => {
                 src={path[index]}
                 onRemove={() => handleMultiRemove(singleKey)}
               />
-            ) : ''
+            ) : (
+              ''
+            )
           })}
         </>
-      ) : ''}
+      ) : (
+        ''
+      )}
     </FormGroup>
   )
 }

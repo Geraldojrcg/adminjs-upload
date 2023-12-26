@@ -1,9 +1,4 @@
-import {
-  ActionContext,
-  ActionRequest,
-  After,
-  BulkActionResponse,
-} from 'adminjs'
+import { ActionContext, ActionRequest, After, BulkActionResponse } from 'adminjs'
 import { BaseProvider } from '../providers/index.js'
 import { UploadOptionsWithDefault } from '../types/upload-options.type.js'
 import { deleteFile } from '../utils/delete-file.js'

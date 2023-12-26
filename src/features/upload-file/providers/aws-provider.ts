@@ -1,7 +1,13 @@
 import { UploadedFile } from 'adminjs'
 import fs from 'fs'
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { DeleteObjectCommandOutput, GetObjectCommand, PutObjectCommandInput, PutObjectCommandOutput, S3 } from '@aws-sdk/client-s3'
+import {
+  DeleteObjectCommandOutput,
+  GetObjectCommand,
+  PutObjectCommandInput,
+  PutObjectCommandOutput,
+  S3,
+} from '@aws-sdk/client-s3'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { DAY_IN_MINUTES, ERROR_MESSAGES } from '../constants.js'
@@ -16,25 +22,25 @@ import { BaseProvider } from './base-provider.js'
 export type AWSOptions = {
   /**
    * AWS IAM accessKeyId. By default its value is taken from AWS_ACCESS_KEY_ID env variable
-  */
-  accessKeyId?: string;
+   */
+  accessKeyId?: string
   /**
    * AWS IAM secretAccessKey. By default its value is taken from AWS_SECRET_ACCESS_KEY env variable
    */
-  secretAccessKey?: string;
+  secretAccessKey?: string
   /**
    * AWS region where your bucket was created.
-  */
-  region: string;
+   */
+  region: string
   /**
    * S3 Bucket where files will be stored
    */
-  bucket: string;
+  bucket: string
   /**
    * indicates how long links should be available after page load (in minutes).
    * Default to 24h. If set to 0 adapter will mark uploaded files as PUBLIC ACL.
    */
-  expires?: number;
+  expires?: number
 }
 
 let AWS_S3
@@ -81,11 +87,9 @@ export class AWSProvider extends BaseProvider {
 
   public async path(key: string, bucket: string): Promise<string> {
     if (this.expires) {
-      return getSignedUrl(
-        this.s3,
-        new GetObjectCommand({ Key: key, Bucket: bucket }),
-        { expiresIn: this.expires },
-      )
+      return getSignedUrl(this.s3, new GetObjectCommand({ Key: key, Bucket: bucket }), {
+        expiresIn: this.expires,
+      })
     }
     // https://bucket.s3.amazonaws.com/key
     return `https://${bucket}.s3.amazonaws.com/${key}`

@@ -1,37 +1,37 @@
-import { LocalProvider } from "../providers/local-provider";
-import { GCPProvider } from "../providers/gcp-provider";
-import { AWSProvider } from "../providers/aws-provider";
-import { MinIoProvider } from "../providers/minio-provider";
-import { BaseProvider } from "../providers";
-import { UploadOptions, AvailableDefaultProviders } from "../types/upload-options.type";
-import { ERROR_MESSAGES } from "../constants";
+import { LocalProvider } from '../providers/local-provider.js'
+import { GCPProvider } from '../providers/gcp-provider.js'
+import { AWSProvider } from '../providers/aws-provider.js'
+import { MinIoProvider } from '../providers/minio-provider.js'
+import { BaseProvider } from '../providers/index.js'
+import { UploadOptions, AvailableDefaultProviders } from '../types/upload-options.type.js'
+import { ERROR_MESSAGES } from '../constants.js'
 
 export type GetProviderReturn = {
-  name: AvailableDefaultProviders;
-  provider: BaseProvider;
-};
+  name: AvailableDefaultProviders
+  provider: BaseProvider
+}
 
-export const getProvider = (options: UploadOptions["provider"]): GetProviderReturn => {
+export const getProvider = (options: UploadOptions['provider']): GetProviderReturn => {
   if (!options) {
-    throw new Error(ERROR_MESSAGES.NO_PROVIDER);
+    throw new Error(ERROR_MESSAGES.NO_PROVIDER)
   }
 
   // when someone passes its own implementation as options
-  if ((options as BaseProvider).name === "BaseProvider") {
+  if ((options as BaseProvider).name === 'BaseProvider') {
     return {
-      name: "base",
+      name: 'base',
       provider: options as BaseProvider,
-    };
+    }
   }
 
-  const givenProviders = Object.keys(options);
+  const givenProviders = Object.keys(options)
 
   if (givenProviders.length !== 1) {
-    throw new Error(ERROR_MESSAGES.WRONG_PROVIDER_OPTIONS);
+    throw new Error(ERROR_MESSAGES.WRONG_PROVIDER_OPTIONS)
   }
 
-  const providerName = givenProviders[0] as AvailableDefaultProviders;
-  const providerOptions = options[providerName];
+  const providerName = givenProviders[0] as AvailableDefaultProviders
+  const providerOptions = options[providerName]
 
   const providerMap: Record<AvailableDefaultProviders, () => BaseProvider> = {
     minio: () => new MinIoProvider(providerOptions),
@@ -39,14 +39,14 @@ export const getProvider = (options: UploadOptions["provider"]): GetProviderRetu
     gcp: () => new GCPProvider(providerOptions),
     local: () => new LocalProvider(providerOptions),
     base: () => providerOptions as BaseProvider,
-  };
-  const provider = providerMap[providerName]();
+  }
+  const provider = providerMap[providerName]()
   if (!provider) {
-    throw new Error(ERROR_MESSAGES.NO_PROVIDER);
+    throw new Error(ERROR_MESSAGES.NO_PROVIDER)
   }
 
   return {
     provider,
     name: providerName,
-  };
-};
+  }
+}

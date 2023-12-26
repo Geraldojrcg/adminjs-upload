@@ -8,19 +8,19 @@ import { MimeType } from './mime-types.type.js'
  * @private
  */
 type PropertyCustom = {
-  filePathProperty: string;
-  fileProperty: string;
-  filesToDeleteProperty: string;
-  keyProperty: string;
-  fileNameProperty?: string;
-  mimeTypeProperty?: string;
-  bucketProperty?: string;
-  defaultBucket: string;
-  mimeTypes?: Array<MimeType | string>;
-  maxSize?: number;
-  provider: string;
-  multiple: boolean;
-  opts?: ProviderOpts;
-};
+  filePathProperty: string
+  fileProperty: string
+  filesToDeleteProperty: string
+  keyProperty: string
+  fileNameProperty?: string
+  mimeTypeProperty?: string
+  bucketProperty?: string
+  defaultBucket: string
+  mimeTypes?: Array<MimeType | string>
+  maxSize?: number
+  provider: string
+  multiple: boolean
+  opts?: ProviderOpts
+}
 
 export default PropertyCustom

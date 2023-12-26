@@ -4,10 +4,12 @@ import { hasDuplicatedProperties, validatePropertiesGlobally } from './validate-
 
 describe('hasDuplicatedProperties', () => {
   it('does not throw an all properties have different values', () => {
-    expect(hasDuplicatedProperties({
-      key: 'sameValue',
-      file: 'otherValue',
-    })).to.be.false
+    expect(
+      hasDuplicatedProperties({
+        key: 'sameValue',
+        file: 'otherValue',
+      }),
+    ).to.be.false
   })
 
   it('throws an error when 2 properties have the same values', () => {

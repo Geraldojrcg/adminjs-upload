@@ -1,6 +1,6 @@
-# Upload Feature for AdminJS
+# Upload Feature for AdminJS [forked]
 
-This is an official [AdminJS](https://github.com/SoftwareBrothers/adminjs) feature which uploads files to resources.
+This is an unofficial [AdminJS](https://github.com/SoftwareBrothers/adminjs) feature which uploads files to resources.
 
 ## AdminJS
 
@@ -24,5 +24,5 @@ AdminJS is copyrighted © 2023 rst.software. It is a free software, and may be r
 
 We’re an open, friendly team that helps clients from all over the world to transform their businesses and create astonishing products.
 
-* We are available for [hire](https://www.rst.software/estimate-your-project).
-* If you want to work for us - check out the [career page](https://www.rst.software/join-us).
+- We are available for [hire](https://www.rst.software/estimate-your-project).
+- If you want to work for us - check out the [career page](https://www.rst.software/join-us).
