@@ -37,19 +37,22 @@ export type MinIoOptions = {
 }
 
 export class MinIoProvider extends BaseProvider {
-  private s3: S3
+  private s3!: S3
 
-  private endpoint: string
+  private endpoint!: string
 
-  public expires: number
+  public expires!: number
 
   constructor(options: MinIoOptions) {
     super(options.bucket)
+    this.setupS3Client(options)
+  }
 
+  private async setupS3Client(options: MinIoOptions) {
     let AWS_S3: typeof S3
     try {
       // eslint-disable-next-line
-      const AWS = require('aws-sdk')
+      const AWS = await import('aws-sdk')
       AWS_S3 = AWS.S3
     } catch (error) {
       throw new Error(ERROR_MESSAGES.NO_AWS_SDK)
