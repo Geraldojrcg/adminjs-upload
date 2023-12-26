@@ -1,6 +1,6 @@
 import fs from 'fs'
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { S3 } from 'aws-sdk'
+import { type S3 } from 'aws-sdk'
 import { UploadedFile } from 'adminjs'
 import { ERROR_MESSAGES, DAY_IN_MINUTES } from '../constants.js'
 import { BaseProvider } from './base-provider.js'
@@ -49,21 +49,20 @@ export class MinIoProvider extends BaseProvider {
   }
 
   private async setupS3Client(options: MinIoOptions) {
-    let AWS_S3: typeof S3
     try {
       // eslint-disable-next-line
-      const AWS = await import('aws-sdk')
-      AWS_S3 = AWS.S3
+      const S3Client = (await import('aws-sdk/clients/s3.js')).default
+      this.expires = options.expires ?? DAY_IN_MINUTES
+      this.endpoint = options.endpoint
+
+      this.s3 = new S3Client({
+        s3ForcePathStyle: true,
+        signatureVersion: 'v4',
+        ...options,
+      })
     } catch (error) {
       throw new Error(ERROR_MESSAGES.NO_AWS_SDK)
     }
-    this.expires = options.expires ?? DAY_IN_MINUTES
-    this.endpoint = options.endpoint
-    this.s3 = new AWS_S3({
-      s3ForcePathStyle: true, // needed with minio?
-      signatureVersion: 'v4',
-      ...options,
-    })
   }
 
   public async upload(file: UploadedFile, key: string): Promise<S3.ManagedUpload.SendData> {

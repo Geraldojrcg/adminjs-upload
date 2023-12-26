@@ -14,7 +14,7 @@
     "strictBindCallApply": true,
     "noImplicitThis": true,
     "moduleResolution": "NodeNext",
-    "module": "ESNext",
+    "module": "NodeNext",
     "paths": {
       "react": ["node_modules/@types/react"]
     }
